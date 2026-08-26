@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Huqan tarayıcı demosu için yerel önizleme sayfası.">
+  <title>Huqan Demo — Yerel Önizleme</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root{color-scheme:dark;--bg:#060907;--panel:#0d130f;--ink:#f4f7f2;--muted:#97a398;--line:rgba(220,255,225,.15);--lime:#c8ff67;--mint:#66e2ba}
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -15%,rgba(200,255,103,.09),transparent 42%),var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    body{padding:24px}
+    .preview{width:min(1480px,100%);margin:0 auto}
+    .preview-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:15px 18px;border:1px solid var(--line);border-radius:16px;background:rgba(13,19,15,.88);box-shadow:0 18px 60px rgba(0,0,0,.3);backdrop-filter:blur(14px)}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:.08em}
+    .mark{display:grid;place-items:center;width:31px;height:31px;border:1px solid rgba(200,255,103,.7);clip-path:polygon(25% 6%,75% 6%,100% 50%,75% 94%,25% 94%,0 50%);color:var(--lime);font-size:13px}
+    .meta{display:flex;align-items:center;gap:16px;color:var(--muted);font:12px ui-monospace,SFMono-Regular,Menlo,monospace}
+    .live{display:flex;align-items:center;gap:8px}.live:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 6px rgba(102,226,186,.11)}
+    .back{padding:9px 13px;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;transition:.2s}.back:hover{border-color:var(--lime);color:var(--lime)}
+    .intro{padding:38px 4px 22px}.eyebrow{color:var(--lime);font:500 11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase}.intro h1{margin:13px 0 8px;font-size:clamp(27px,4vw,48px);letter-spacing:-.045em}.intro p{margin:0;color:var(--muted);line-height:1.55;max-width:680px}
+    .frame-wrap{border:1px solid rgba(200,255,103,.32);border-radius:22px;background:#080c09;padding:9px;box-shadow:0 30px 90px rgba(0,0,0,.45)}
+    iframe{display:block;width:100%;height:1420px;border:0;border-radius:15px;background:#060907}
+    .footnote{padding:18px 4px 4px;color:#748077;font-size:12px;line-height:1.5}.footnote code{color:#bfe891}
+    @media(max-width:700px){body{padding:12px}.preview-bar{align-items:flex-start;padding:13px}.meta{gap:9px;font-size:10px}.live{display:none}.back{padding:8px 10px}.intro{padding:28px 3px 18px}.frame-wrap{padding:5px;border-radius:16px}iframe{height:1800px;border-radius:12px}}
+  </style>
+</head>
+<body>
+  <main class="preview">
+    <header class="preview-bar">
+      <div class="brand"><span class="mark">H</span><span>HUQAN / DEMO</span></div>
+      <div class="meta"><span class="live">LOCAL PREVIEW</span><a class="back" href="./index.html">Tam siteye dön</a></div>
+    </header>
+    <section class="intro">
+      <span class="eyebrow">Yerel tarayıcı önizlemesi</span>
+      <h1>Güven sınırını deneyin.</h1>
+      <p>Bu sayfa, sitenin canlı API kullanmayan interaktif demosunu odaklanmış bir önizleme çerçevesinde açar. Senaryoları seçerek karar, sinyal ve Trust Receipt akışını inceleyin.</p>
+    </section>
+    <section class="frame-wrap" aria-label="Huqan interaktif demo önizlemesi">
+      <iframe src="./index.html#demo" title="Huqan interaktif demo"></iframe>
+    </section>
+    <p class="footnote">Çalıştırmak için depo klasöründe <code>python3 -m http.server 4173</code> komutunu çalıştırın ve <code>http://localhost:4173/preview.html</code> adresini açın.</p>
+  </main>
+</body>
+</html>
