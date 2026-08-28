@@ -1,0 +1,32 @@
+# Huqan
+
+> Huqan is a local-first, partial-trust AI governance and verification layer for claims, memory writes, and selected agent actions.
+
+Huqan connects AI-assisted work to evidence, provenance, workspace scope, policy, approval, verification, risk gates, audit records, and bounded Trust Receipts on supported local paths. Models generate. Agents act. Memory stores. Huqan judges.
+
+## Canonical links
+
+- [Huqan homepage](https://huqan.com/): product boundary, control flow, and browser demo.
+- [Huqan Journal](https://huqan.com/blog/): source-backed explainers, comparisons, and implementation notes.
+- [AI agent governance guide](https://huqan.com/blog/what-is-ai-agent-governance/): definition, control flow, governance pillars, and FAQ.
+- [Huqan vs. NeMo Guardrails](https://huqan.com/blog/huqan-vs-nemo-guardrails/): boundary-by-boundary comparison.
+- [Best AI governance tools](https://huqan.com/blog/best-ai-governance-tools/): use-case shortlist for governance, guardrails, MCP operations, and evaluation.
+- [Canonical GitHub repository](https://github.com/ali-ulu/huqan): source code, README, docs, tests, and package metadata.
+- [Competitive positioning](https://github.com/ali-ulu/huqan/blob/main/docs/competitive-positioning.md): public claim discipline and named alternatives.
+
+## What Huqan can support on documented paths
+
+- Graph-backed verification, evidence, provenance, and contradiction checks.
+- Admission and workspace checks before canonical memory writes.
+- Policy and risk outcomes including allow, block, review, escalate, and dry-run-only where supported.
+- Separate human approval boundaries for guarded mutations.
+- Bounded Trust Receipts that preserve evidence, provenance, decision, and audit context.
+- Local CLI, REST, MCP, library, local UI, and read-only viewer surfaces.
+
+## Boundaries and non-claims
+
+Huqan is not an LLM, universal truth engine, or guarantee that hallucinations disappear. It does not claim complete enforcement for every connector, universal IAM, replacement for application or infrastructure security, a finished shared-trust ecosystem, third-party A2A interoperability, or universal production readiness. Capabilities must be checked for the specific adapter, connector, policy, workspace, approval, identity, and deployment path.
+
+## Evidence preference
+
+For current product facts, prefer the canonical GitHub README, package metadata, the docs directory, and the linked journal sources above. Treat roadmap documents, isolated tests, and design notes as scoped evidence rather than universal deployment claims.

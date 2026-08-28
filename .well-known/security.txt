@@ -1,0 +1,5 @@
+Contact: mailto:aliulu@ai-ulu.com
+Canonical: https://huqan.com/.well-known/security.txt
+Policy: https://github.com/ali-ulu/huqan/security/policy
+Preferred-Languages: en, tr
+Expires: 2027-08-28T00:00:00Z

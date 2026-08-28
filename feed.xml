@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Huqan Journal</title>
+    <link>https://huqan.com/blog/</link>
+    <description>Source-backed notes on AI agent governance, verification, provenance, memory safety, action approval, and Trust Receipts.</description>
+    <language>en</language>
+    <lastBuildDate>Fri, 28 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>5 Best AI Governance Tools in 2026, Compared by Use Case</title>
+      <link>https://huqan.com/blog/best-ai-governance-tools/</link>
+      <guid isPermaLink="true">https://huqan.com/blog/best-ai-governance-tools/</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate>
+      <description>A source-backed shortlist of tools for evidence-bound governance, guardrails, agent middleware, MCP operations, and LLM evaluation.</description>
+    </item>
+    <item>
+      <title>Huqan vs. NeMo Guardrails: Which Boundary Do You Need?</title>
+      <link>https://huqan.com/blog/huqan-vs-nemo-guardrails/</link>
+      <guid isPermaLink="true">https://huqan.com/blog/huqan-vs-nemo-guardrails/</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate>
+      <description>A boundary-by-boundary comparison of evidence-bound AI governance and programmable LLM guardrails.</description>
+    </item>
+    <item>
+      <title>What Is AI Agent Governance? A Practical Guide</title>
+      <link>https://huqan.com/blog/what-is-ai-agent-governance/</link>
+      <guid isPermaLink="true">https://huqan.com/blog/what-is-ai-agent-governance/</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate>
+      <description>How evidence, policy, approval, verification, and audit records keep AI agent work reviewable.</description>
+    </item>
+  </channel>
+</rss>

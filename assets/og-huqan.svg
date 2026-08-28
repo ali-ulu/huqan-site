@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Huqan local-first AI governance</title>
+  <desc id="desc">Huqan verifies AI claims, protects memory writes, and governs selected agent actions.</desc>
+  <defs>
+    <radialGradient id="glow" cx="80%" cy="20%" r="70%"><stop offset="0" stop-color="#1c3a22"/><stop offset="1" stop-color="#060907"/></radialGradient>
+    <linearGradient id="lime" x1="0" x2="1"><stop stop-color="#c8ff67"/><stop offset="1" stop-color="#66e2ba"/></linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#060907"/><rect width="1200" height="630" fill="url(#glow)" opacity=".9"/>
+  <path d="M0 556H1200" stroke="#c8ff67" stroke-opacity=".18"/>
+  <g fill="none" stroke="#c8ff67" stroke-opacity=".3"><path d="M690 225L875 160L1030 255L915 405L720 365Z"/><path d="M720 365L570 465M875 160L1050 100M915 405L1080 470"/></g>
+  <g fill="#0d130f" stroke="#c8ff67" stroke-opacity=".7"><circle cx="690" cy="225" r="34"/><circle cx="1050" cy="100" r="28"/><circle cx="570" cy="465" r="28"/><circle cx="1080" cy="470" r="28"/></g>
+  <rect x="785" y="235" width="180" height="180" rx="34" transform="rotate(45 875 325)" fill="#102016" stroke="url(#lime)" stroke-width="2"/>
+  <circle cx="875" cy="325" r="57" fill="#c8ff67" opacity=".9"/><text x="875" y="345" text-anchor="middle" font-family="Arial,sans-serif" font-size="52" font-weight="700" fill="#071008">OK</text>
+  <text x="74" y="130" font-family="Arial,sans-serif" font-size="20" letter-spacing="5" fill="#c8ff67">LOCAL-FIRST · DETERMINISTIC · AUDITABLE</text>
+  <text x="74" y="246" font-family="Georgia,serif" font-size="90" fill="#f4f7f2">Trust the evidence.</text>
+  <text x="74" y="335" font-family="Georgia,serif" font-size="90" font-style="italic" fill="#c8ff67">Before you act.</text>
+  <text x="74" y="450" font-family="Arial,sans-serif" font-size="24" fill="#aab5ab">AI claims · memory · selected agent actions</text>
+  <text x="74" y="570" font-family="Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="3" fill="#f4f7f2">HUQAN</text>
+</svg>
