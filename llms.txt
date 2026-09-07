@@ -10,6 +10,7 @@ Huqan connects AI-assisted work to evidence, provenance, workspace scope, policy
 - [Huqan Journal](https://huqan.com/blog/): source-backed explainers, comparisons, and implementation notes.
 - [AI agent governance guide](https://huqan.com/blog/what-is-ai-agent-governance/): definition, control flow, governance pillars, and FAQ.
 - [Huqan vs. NeMo Guardrails](https://huqan.com/blog/huqan-vs-nemo-guardrails/): boundary-by-boundary comparison.
+- [NeMo Guardrails alternatives](https://huqan.com/blog/nemo-guardrails-alternatives/): four options compared by the boundary each defends.
 - [Best AI governance tools](https://huqan.com/blog/best-ai-governance-tools/): use-case shortlist for governance, guardrails, MCP operations, and evaluation.
 - [Canonical GitHub repository](https://github.com/ali-ulu/huqan): source code, README, docs, tests, and package metadata.
 - [Competitive positioning](https://github.com/ali-ulu/huqan/blob/main/docs/competitive-positioning.md): public claim discipline and named alternatives.
