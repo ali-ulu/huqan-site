@@ -1,0 +1,7 @@
+# Cloudflare Pages redirect rules.
+#
+# /en/ was a second URL for the English homepage: it answered 200 and pointed
+# its canonical at /, so the same page existed twice for crawlers. / is the
+# English page, /tr/ is the Turkish one, and hreflang already says so.
+/en/*  /  301
+/en    /  301
