@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 import xml.etree.ElementTree as ET
 
-ROOT = Path('/home/ubuntu/huqan-site')
+ROOT = Path(__file__).resolve().parents[1]
 errors = []
 notes = []
 html_files = sorted(p for p in ROOT.rglob('*.html') if '.git' not in p.parts)
@@ -14,9 +14,13 @@ for path in html_files:
     desc = soup.find('meta', attrs={'name':'description'})
     canon = soup.find('link', rel=lambda value: value and 'canonical' in value)
     h1 = soup.find_all('h1')
+    robots_meta = soup.find('meta', attrs={'name':'robots'})
+    # a noindex page is never served to crawlers, so a canonical or a
+    # description on it would be meaningless rather than missing
+    noindex = bool(robots_meta and 'noindex' in (robots_meta.get('content') or ''))
     if not title or not title.get_text(strip=True): errors.append(f'{rel}: missing title')
-    if not desc or not desc.get('content'): errors.append(f'{rel}: missing description')
-    if not canon or not canon.get('href', '').startswith('https://huqan.com/'): errors.append(f'{rel}: missing canonical')
+    if not noindex and (not desc or not desc.get('content')): errors.append(f'{rel}: missing description')
+    if not noindex and (not canon or not canon.get('href', '').startswith('https://huqan.com/')): errors.append(f'{rel}: missing canonical')
     if len(h1) != 1: errors.append(f'{rel}: expected 1 h1, found {len(h1)}')
     for script in soup.find_all('script', attrs={'type':'application/ld+json'}):
         try: json.loads(script.string or script.get_text())
