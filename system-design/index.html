@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore HUQAN's system design: agent adapters, evidence and identity context, deterministic policy gates, human approval, execution boundaries, and Trust Receipts.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#060907">
+  <title>System Design for AI Agents | HUQAN Architecture</title>
+  <link rel="canonical" href="https://huqan.com/system-design/">
+  <link rel="alternate" hreflang="en" href="https://huqan.com/system-design/">
+  <link rel="alternate" hreflang="tr" href="https://huqan.com/tr/system-design/">
+  <link rel="alternate" hreflang="x-default" href="https://huqan.com/system-design/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Huqan">
+  <meta property="og:title" content="System Design for AI Agents | HUQAN Architecture">
+  <meta property="og:description" content="A source-backed view of where identity, evidence, policy, approval, execution and receipts belong in an agent system.">
+  <meta property="og:url" content="https://huqan.com/system-design/">
+  <meta property="og:image" content="https://huqan.com/assets/og-huqan.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="System Design for AI Agents | HUQAN Architecture">
+  <meta name="twitter:description" content="See how HUQAN places a local trust boundary on supported agent execution paths.">
+  <meta name="twitter:image" content="https://huqan.com/assets/og-huqan.png">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <link rel="stylesheet" href="/assets/system-design.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {"@type":"Organization","@id":"https://huqan.com/#organization","name":"Huqan","url":"https://huqan.com/"},
+      {"@type":"WebPage","@id":"https://huqan.com/system-design/#webpage","url":"https://huqan.com/system-design/","name":"System Design for AI Agents","description":"A source-backed architecture guide to HUQAN's supported trust and execution boundaries.","inLanguage":"en","isPartOf":{"@id":"https://huqan.com/#website"},"about":{"@id":"https://huqan.com/#software"}},
+      {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Huqan","item":"https://huqan.com/"},{"@type":"ListItem","position":2,"name":"System Design","item":"https://huqan.com/system-design/"}]}
+    ]
+  }
+  </script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="shell"><a class="brand" href="/"><span class="mark" aria-hidden="true">H</span>HUQAN</a><nav class="nav" aria-label="Primary navigation"><a class="home" href="/">Home</a><a href="/#architecture">Platform</a><a href="/system-design/" aria-current="page">System design</a><a href="/blog/">Journal</a><a href="https://github.com/ali-ulu/huqan" target="_blank" rel="noreferrer">GitHub</a><span class="lang"><a class="active" href="/system-design/" lang="en" hreflang="en">EN</a><a href="/tr/system-design/" lang="tr" hreflang="tr">TR</a></span></nav></div></header>
+<main id="main" class="sd-page">
+  <section class="sd-hero shell">
+    <div class="sd-hero-copy">
+      <div class="sd-kicker">Architecture / 01 — Trust boundaries</div>
+      <h1>System design for <em>agents that act.</em></h1>
+      <p class="sd-lead">An agent is more than a model call once it can write memory, change a repository, operate infrastructure or reach an external system. This guide shows where HUQAN fits: on supported execution paths, between an agent's proposal and the effect it can cause.</p>
+      <div class="sd-actions"><a class="button" href="#architecture">Explore the architecture <span aria-hidden="true">↓</span></a><a class="sd-text-link" href="https://github.com/ali-ulu/huqan/blob/main/README.md" target="_blank" rel="noreferrer">Read the implementation contract ↗</a></div>
+      <div class="sd-meta"><span>Source checked: HUQAN main</span><span>Package 1.1.1</span><span>2 Nov 2026</span></div>
+    </div>
+    <div class="sd-hero-art" aria-label="Illustrative diagram: agent request passes through a local HUQAN trust boundary before an external effect, with a Trust Receipt recorded">
+      <div class="sd-art-top"><span>EXECUTION PATH / 01—07</span><span class="sd-art-live"><i></i> LOCAL DECISION</span></div>
+      <div class="sd-art-flow">
+        <div class="sd-art-node"><small>INPUT</small><b>AGENT</b><span>proposal</span></div>
+        <div class="sd-art-arrow" aria-hidden="true">→</div>
+        <div class="sd-art-boundary">
+          <div class="sd-art-boundary-head"><span>HUQAN</span><b>TRUST BOUNDARY</b><small>CONNECTED PATH ONLY</small></div>
+          <div class="sd-art-modules"><span>IDENTITY<br>+ SCOPE</span><span>EVIDENCE<br>+ CONTEXT</span><span>POLICY<br>+ RISK</span><span>HUMAN<br>AUTHORITY</span></div>
+        </div>
+        <div class="sd-art-arrow" aria-hidden="true">→</div>
+        <div class="sd-art-node sd-art-node-out"><small>CONTROLLED</small><b>EFFECT</b><span>or refusal</span></div>
+      </div>
+      <div class="sd-art-bottom"><span>LOCAL TRUST DECISION</span><span class="sd-art-receipt">↳ TRUST RECEIPT</span></div>
+      <div class="sd-art-caption">Conceptual system map · not a live runtime view</div>
+    </div>
+  </section>
+
+  <section class="sd-section shell" id="architecture">
+    <div class="sd-section-head">
+      <div><div class="sd-kicker">01 / The system map</div><h2>Seven steps. One explicit boundary.</h2></div>
+      <p>The diagram separates the agent that proposes work from the controls that judge, authorize and record it. Select a stage to inspect its responsibility and its limit.</p>
+    </div>
+    <div class="sd-architecture">
+      <div class="sd-flow" aria-label="Interactive HUQAN architecture stages">
+        <button class="sd-layer" type="button" data-layer="agent" aria-controls="layer-detail" aria-pressed="false"><span class="sd-layer-num">01</span><span class="sd-layer-title">Agent runtime</span><span class="sd-layer-sub">Plans and proposes</span></button>
+        <span class="sd-flow-link" aria-hidden="true">↓</span>
+        <button class="sd-layer" type="button" data-layer="adapter" aria-controls="layer-detail" aria-pressed="false"><span class="sd-layer-num">02</span><span class="sd-layer-title">Client adapter</span><span class="sd-layer-sub">Maps the native hook</span></button>
+        <span class="sd-flow-link" aria-hidden="true">↓</span>
+        <button class="sd-layer" type="button" data-layer="evidence" aria-controls="layer-detail" aria-pressed="false"><span class="sd-layer-num">03</span><span class="sd-layer-title">Evidence + identity</span><span class="sd-layer-sub">Binds context and scope</span></button>
+        <span class="sd-flow-link" aria-hidden="true">↓</span>
+        <button class="sd-layer" type="button" data-layer="policy" aria-controls="layer-detail" aria-pressed="true"><span class="sd-layer-num">04</span><span class="sd-layer-title">Policy + risk gate</span><span class="sd-layer-sub">Returns a bounded outcome</span></button>
+        <span class="sd-flow-link" aria-hidden="true">↓</span>
+        <button class="sd-layer" type="button" data-layer="authority" aria-controls="layer-detail" aria-pressed="false"><span class="sd-layer-num">05</span><span class="sd-layer-title">Approval Authority</span><span class="sd-layer-sub">A person authorizes</span></button>
+        <span class="sd-flow-link" aria-hidden="true">↓</span>
+        <button class="sd-layer" type="button" data-layer="execution" aria-controls="layer-detail" aria-pressed="false"><span class="sd-layer-num">06</span><span class="sd-layer-title">Execution boundary</span><span class="sd-layer-sub">Action proceeds or stops</span></button>
+        <span class="sd-flow-link" aria-hidden="true">↓</span>
+        <button class="sd-layer" type="button" data-layer="receipt" aria-controls="layer-detail" aria-pressed="false"><span class="sd-layer-num">07</span><span class="sd-layer-title">Trust Receipt</span><span class="sd-layer-sub">Decision remains inspectable</span></button>
+      </div>
+      <aside class="sd-inspector" id="layer-detail" aria-live="polite">
+        <div class="sd-inspector-top"><span>SELECTED COMPONENT</span><span class="sd-inspector-index" id="layerIndex">04 / 07</span></div>
+        <div class="sd-inspector-mark" id="layerMark">04</div>
+        <h3 id="layerTitle">Policy + risk gate</h3>
+        <p id="layerDescription">The local policy path evaluates the action request against configured rules and risk signals. Unknown tools or commands do not silently become trusted.</p>
+        <div class="sd-inspector-rule"><span>RESPONSIBILITY</span><b id="layerResponsibility">Decide before the effect.</b></div>
+        <div class="sd-inspector-rule"><span>BOUNDARY</span><b id="layerBoundary">The gate only governs calls that reach it before execution.</b></div>
+        <a id="layerSource" class="sd-inspector-source" href="https://github.com/ali-ulu/huqan/blob/main/docs/external-action-guard.md" target="_blank" rel="noreferrer">Open source document ↗</a>
+        <noscript><p class="sd-noscript">The interactive selector needs JavaScript. The full boundary and its limits are also described in the sections below.</p></noscript>
+      </aside>
+    </div>
+    <div class="sd-note"><span class="sd-note-symbol">i</span><p><b>Important:</b> HUQAN is not the model, agent planner or universal API gateway. A client-specific adapter must call the pre-execution gate before the client performs the action. An unconnected agent is outside that gate's coverage.</p></div>
+  </section>
+
+  <section class="sd-section sd-lab-section">
+    <div class="sd-section-head">
+      <div><div class="sd-kicker">02 / Decision path</div><h2>Same agent. Different blast radius.</h2></div>
+      <p>These examples are taken from the default <code>claude-code</code> gate profile documented in the repository. They demonstrate the decision boundary, not a live request to your local installation.</p>
+    </div>
+    <div class="sd-lab">
+      <div class="sd-lab-controls">
+        <div class="sd-lab-label">SELECT AN ACTION</div>
+        <button type="button" class="sd-scenario" data-scenario="read" aria-pressed="true"><span>01</span><b>Inspect repository state</b><code>git status</code></button>
+        <button type="button" class="sd-scenario" data-scenario="unknown" aria-pressed="false"><span>02</span><b>Run an unclassified command</b><code>npm test</code></button>
+        <button type="button" class="sd-scenario" data-scenario="destructive" aria-pressed="false"><span>03</span><b>Force-push a branch</b><code>git push --force</code></button>
+      </div>
+      <div class="sd-lab-result" aria-live="polite">
+        <div class="sd-lab-result-top"><span>DEFAULT PROFILE EXAMPLE</span><span class="sd-status allow" id="scenarioStatus">ALLOW</span></div>
+        <div class="sd-lab-action" id="scenarioCommand">git status</div>
+        <h3 id="scenarioTitle">Read-only inspection passes.</h3>
+        <p id="scenarioDescription">The documented default profile lets this read-only command through without prompting.</p>
+        <div class="sd-lab-foot"><span>WHY IT MATTERS</span><b id="scenarioReason">Low-impact inspection stays fast; review is reserved for uncertainty and risk.</b></div>
+      </div>
+    </div>
+    <p class="sd-disclaimer">Illustrative only. Policy configuration changes outcomes. The browser page does not call HUQAN, execute commands, request approval, or create production Trust Receipts.</p>
+  </section>
+
+  <section class="sd-section shell">
+    <div class="sd-section-head">
+      <div><div class="sd-kicker">03 / Engineering choices</div><h2>Patterns that shape the integration.</h2></div>
+      <p>These are system-design lenses for evaluating an agent deployment. They are not features bundled into HUQAN, and none removes the need to verify the actual execution path.</p>
+    </div>
+    <div class="sd-pattern-grid">
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/how-api-gateway-works" target="_blank" rel="noreferrer"><span class="sd-pattern-type">INTERCEPTION</span><h3>API Gateway</h3><p>Separate routing from authorization. A request reaching a gateway is not automatically a request that has passed policy.</p><span class="sd-pattern-link">Read the reference ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/sidecar-pattern" target="_blank" rel="noreferrer"><span class="sd-pattern-type">DEPLOYMENT</span><h3>Sidecar pattern</h3><p>Consider where a local enforcement component should live relative to the agent and its tools.</p><span class="sd-pattern-link">Read the reference ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/idempotent-api" target="_blank" rel="noreferrer"><span class="sd-pattern-type">CORRECTNESS</span><h3>Idempotency</h3><p>Retries must not turn one approval into two external effects. Bind identity, action and replay handling.</p><span class="sd-pattern-link">Read the reference ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/rate-limiting" target="_blank" rel="noreferrer"><span class="sd-pattern-type">RESILIENCE</span><h3>Rate limiting</h3><p>Bound repeated requests and resource pressure. Rate limits complement authorization; they do not replace it.</p><span class="sd-pattern-link">Read the reference ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/durable-ai-agents" target="_blank" rel="noreferrer"><span class="sd-pattern-type">RECOVERY</span><h3>Durable agents</h3><p>Resuming a workflow needs a clear distinction between a pending decision, a consumed approval and a completed effect.</p><span class="sd-pattern-link">Read the reference ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/how-mcp-works" target="_blank" rel="noreferrer"><span class="sd-pattern-type">PROTOCOL</span><h3>MCP deep dive</h3><p>Tool discovery and transport are not authorization. Keep the execution boundary explicit around sensitive calls.</p><span class="sd-pattern-link">Read the reference ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/multi-agent-system" target="_blank" rel="noreferrer"><span class="sd-pattern-type">DELEGATION</span><h3>Multi-agent architecture</h3><p>When work crosses agents, preserve who initiated it, who owns it and which delegation chain applies.</p><span class="sd-pattern-link">Read the reference ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/llm-evaluation-and-guardrails" target="_blank" rel="noreferrer"><span class="sd-pattern-type">EVALUATION</span><h3>Evals, guardrails and security</h3><p>Evaluation scores, content rails and permission decisions solve different problems. Design and test each boundary separately.</p><span class="sd-pattern-link">Read the reference ↗</span></a>
+    </div>
+    <div class="sd-catalog-note">
+      <div><span class="sd-kicker">REFERENCE CATALOG</span><h3>System Design Academy</h3><p>The repository indexes 214 external reading references across company case studies, system-design fundamentals, interviews, AI engineering and white papers. The cards above are a small, HUQAN-relevant selection—not a reproduction of the articles.</p></div>
+      <a class="button" href="https://github.com/systemdesign42/system-design-academy" target="_blank" rel="noreferrer">Open the 214-reference catalog ↗</a>
+      <p class="sd-license-note">The catalog identifies its contents as CC BY-NC-ND 4.0. This page links to source publications and does not copy or adapt their article text.</p>
+    </div>
+  </section>
+
+  <section class="sd-section shell">
+    <div class="sd-section-head">
+      <div><div class="sd-kicker">04 / Honest boundaries</div><h2>What the architecture does not promise.</h2></div>
+      <p>Trustworthy system design makes failure and coverage boundaries visible. These constraints are part of the product contract, not footnotes.</p>
+    </div>
+    <div class="sd-boundaries">
+      <div class="sd-boundary"><span>01</span><div><h3>No hook, no gate coverage.</h3><p>The guard only governs an action when the connected client invokes it before execution. An agent or tool path that bypasses the adapter is not covered by that gate.</p></div></div>
+      <div class="sd-boundary"><span>02</span><div><h3>Deployment boundary matters.</h3><p>The Approval Authority has installers for Windows, Linux and macOS, with Windows the most field-tested. Containers, virtual machines and remote hosts are not supported deployment targets.</p></div></div>
+      <div class="sd-boundary"><span>03</span><div><h3>A receipt is not universal truth.</h3><p>A Trust Receipt records what a specific HUQAN boundary evaluated and decided under specific inputs and policy. It does not prove that an AI claim is universally true or that an operator is honest.</p></div></div>
+      <div class="sd-boundary"><span>04</span><div><h3>It complements other controls.</h3><p>HUQAN does not replace IAM, application security, infrastructure security, sandboxing or organizational governance. A signed plugin is not automatically sandboxed.</p></div></div>
+    </div>
+    <div class="sd-source-line"><b>Implementation sources</b><a href="https://github.com/ali-ulu/huqan/blob/main/docs/external-action-guard.md" target="_blank" rel="noreferrer">External Action Guard</a><a href="https://github.com/ali-ulu/huqan/blob/main/docs/adr/ADR-016-approval-authority-os-boundary.md" target="_blank" rel="noreferrer">Approval Authority ADR</a><a href="https://github.com/ali-ulu/huqan/blob/main/docs/wiki/Trust-Receipts.md" target="_blank" rel="noreferrer">Trust Receipts</a><a href="https://github.com/ali-ulu/huqan/blob/main/docs/wiki/MCP-and-External-Agent-Integration.md" target="_blank" rel="noreferrer">MCP and agent integration</a></div>
+  </section>
+
+  <section class="sd-cta shell">
+    <div><span class="sd-kicker">BUILD FROM THE REAL CONTRACT</span><h2>Start with one agent. One guarded action.</h2><p>Choose a tool call with a meaningful blast radius, connect its pre-execution path, and verify the exact allow, review, block and receipt behaviour before widening coverage.</p></div>
+    <div class="sd-cta-actions"><a class="button" href="https://github.com/ali-ulu/huqan#try-it-in-30-seconds" target="_blank" rel="noreferrer">Run the quickstart ↗</a><a class="sd-text-link" href="/#demo">See the browser walkthrough ↗</a></div>
+  </section>
+</main>
+<footer class="shell"><div>© 2026 Huqan / <a href="https://ai-ulu.com">AI-ULU</a></div><div><a href="/">Home</a> · <a href="/blog/">Journal</a> · <a href="https://github.com/ali-ulu/huqan">Canonical repository</a></div></footer>
+<script src="/assets/system-design.js" defer></script>
+</body>
+</html>

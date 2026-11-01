@@ -7,6 +7,7 @@ Huqan connects AI-assisted work to evidence, provenance, workspace scope, policy
 ## Canonical links
 
 - [Huqan homepage](https://huqan.com/): product boundary, control flow, and browser demo.
+- [System design guide](https://huqan.com/system-design/): architecture map, execution boundaries, approval path, Trust Receipts, and selected engineering references.
 - [Huqan Journal](https://huqan.com/blog/): source-backed explainers, comparisons, and implementation notes.
 - [AI agent governance guide](https://huqan.com/blog/what-is-ai-agent-governance/): definition, control flow, governance pillars, and FAQ.
 - [Huqan vs. NeMo Guardrails](https://huqan.com/blog/huqan-vs-nemo-guardrails/): boundary-by-boundary comparison.
@@ -31,3 +32,9 @@ Huqan is not an LLM, universal truth engine, or guarantee that hallucinations di
 ## Evidence preference
 
 For current product facts, prefer the canonical GitHub README, package metadata, the docs directory, and the linked journal sources above. Treat roadmap documents, isolated tests, and design notes as scoped evidence rather than universal deployment claims.
+
+## System design scope
+
+- The public system design guide is an architecture explanation, not a live HUQAN runtime or production console.
+- The guide reflects HUQAN package version 1.1.1 and the repository documentation checked on 2026-11-02.
+- External references from System Design Academy are linked by title; article text is not reproduced. The Academy repository identifies its contents as CC BY-NC-ND 4.0.

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="HUQAN sistem tasarımını inceleyin: ajan adaptörleri, kanıt ve kimlik bağlamı, deterministik politika kapıları, insan onayı, yürütme sınırları ve Trust Receipt kayıtları.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#060907">
+  <title>Yapay Zekâ Ajanları için Sistem Tasarımı | HUQAN</title>
+  <link rel="canonical" href="https://huqan.com/tr/system-design/">
+  <link rel="alternate" hreflang="en" href="https://huqan.com/system-design/">
+  <link rel="alternate" hreflang="tr" href="https://huqan.com/tr/system-design/">
+  <link rel="alternate" hreflang="x-default" href="https://huqan.com/system-design/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Huqan">
+  <meta property="og:title" content="Yapay Zekâ Ajanları için Sistem Tasarımı | HUQAN">
+  <meta property="og:description" content="Ajan sistemlerinde kimlik, kanıt, politika, onay, yürütme ve kayıt katmanlarının nerede konumlandığını gösteren kaynaklı mimari rehber.">
+  <meta property="og:url" content="https://huqan.com/tr/system-design/">
+  <meta property="og:image" content="https://huqan.com/assets/og-huqan.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Yapay Zekâ Ajanları için Sistem Tasarımı | HUQAN">
+  <meta name="twitter:description" content="HUQAN'ın desteklenen ajan yürütme yollarına yerel güven sınırını nasıl yerleştirdiğini inceleyin.">
+  <meta name="twitter:image" content="https://huqan.com/assets/og-huqan.png">
+  <link rel="stylesheet" href="/assets/blog.css">
+  <link rel="stylesheet" href="/assets/system-design.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {"@type":"Organization","@id":"https://huqan.com/#organization","name":"Huqan","url":"https://huqan.com/"},
+      {"@type":"WebPage","@id":"https://huqan.com/tr/system-design/#webpage","url":"https://huqan.com/tr/system-design/","name":"Yapay Zekâ Ajanları için Sistem Tasarımı","description":"HUQAN'ın desteklenen güven ve yürütme sınırlarını açıklayan kaynaklı mimari rehber.","inLanguage":"tr","isPartOf":{"@id":"https://huqan.com/#website"},"about":{"@id":"https://huqan.com/#software"}},
+      {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Huqan","item":"https://huqan.com/tr/"},{"@type":"ListItem","position":2,"name":"Sistem Tasarımı","item":"https://huqan.com/tr/system-design/"}]}
+    ]
+  }
+  </script>
+</head>
+<body>
+<a class="skip" href="#main">İçeriğe geç</a>
+<header class="site-header"><div class="shell"><a class="brand" href="/tr/"><span class="mark" aria-hidden="true">H</span>HUQAN</a><nav class="nav" aria-label="Ana navigasyon"><a class="home" href="/tr/">Ana sayfa</a><a href="/tr/#architecture">Platform</a><a href="/tr/system-design/" aria-current="page">Sistem tasarımı</a><a href="/tr/blog/">Günlük</a><a href="https://github.com/ali-ulu/huqan" target="_blank" rel="noreferrer">GitHub</a><span class="lang"><a href="/system-design/" lang="en" hreflang="en">EN</a><a class="active" href="/tr/system-design/" lang="tr" hreflang="tr">TR</a></span></nav></div></header>
+<main id="main" class="sd-page">
+  <section class="sd-hero shell">
+    <div class="sd-hero-copy">
+      <div class="sd-kicker">Mimari / 01 — Güven sınırları</div>
+      <h1>Harekete geçen <em>ajanlar için sistem tasarımı.</em></h1>
+      <p class="sd-lead">Bir ajan hafızaya yazabiliyor, depoyu değiştirebiliyor, altyapı işlemleri yapabiliyor veya dış sistemlere erişebiliyorsa artık yalnızca bir model çağrısından ibaret değildir. Bu rehber HUQAN'ın nereye yerleştiğini gösterir: desteklenen yürütme yollarında, ajanın önerisi ile neden olabileceği etki arasına.</p>
+      <div class="sd-actions"><a class="button" href="#architecture">Mimarinin içini aç <span aria-hidden="true">↓</span></a><a class="sd-text-link" href="https://github.com/ali-ulu/huqan/blob/main/README.md" target="_blank" rel="noreferrer">Uygulama sözleşmesini oku ↗</a></div>
+      <div class="sd-meta"><span>Kaynak: HUQAN main</span><span>Paket 1.1.1</span><span>2 Kasım 2026</span></div>
+    </div>
+    <div class="sd-hero-art" aria-label="Şematik diyagram: ajan isteği, dış etki öncesinde yerel HUQAN güven sınırından geçer ve Trust Receipt kaydedilir">
+      <div class="sd-art-top"><span>YÜRÜTME YOLU / 01—07</span><span class="sd-art-live"><i></i> YEREL KARAR</span></div>
+      <div class="sd-art-flow">
+        <div class="sd-art-node"><small>GİRDİ</small><b>AJAN</b><span>öneri</span></div>
+        <div class="sd-art-arrow" aria-hidden="true">→</div>
+        <div class="sd-art-boundary">
+          <div class="sd-art-boundary-head"><span>HUQAN</span><b>GÜVEN SINIRI</b><small>YALNIZ BAĞLI YOLLAR</small></div>
+          <div class="sd-art-modules"><span>KİMLİK<br>+ KAPSAM</span><span>KANIT<br>+ BAĞLAM</span><span>POLİTİKA<br>+ RİSK</span><span>İNSAN<br>OTORİTESİ</span></div>
+        </div>
+        <div class="sd-art-arrow" aria-hidden="true">→</div>
+        <div class="sd-art-node sd-art-node-out"><small>KONTROLLÜ</small><b>ETKİ</b><span>veya ret</span></div>
+      </div>
+      <div class="sd-art-bottom"><span>YEREL GÜVEN KARARI</span><span class="sd-art-receipt">↳ TRUST RECEIPT</span></div>
+      <div class="sd-art-caption">Kavramsal sistem haritası · canlı çalışma zamanı görünümü değildir</div>
+    </div>
+  </section>
+
+  <section class="sd-section shell" id="architecture">
+    <div class="sd-section-head">
+      <div><div class="sd-kicker">01 / Sistem haritası</div><h2>Yedi adım. Tek bir açık sınır.</h2></div>
+      <p>Şema, işi öneren ajanı; işi değerlendiren, yetkilendiren ve kaydeden kontrollerden ayırır. Bir aşamayı seçerek sorumluluğunu ve sınırını inceleyin.</p>
+    </div>
+    <div class="sd-architecture">
+      <div class="sd-flow" aria-label="Etkileşimli HUQAN mimari aşamaları">
+        <button class="sd-layer" type="button" data-layer="agent" aria-controls="layer-detail" aria-pressed="false"><span class="sd-layer-num">01</span><span class="sd-layer-title">Ajan çalışma zamanı</span><span class="sd-layer-sub">Planlar ve önerir</span></button>
+        <span class="sd-flow-link" aria-hidden="true">↓</span>
+        <button class="sd-layer" type="button" data-layer="adapter" aria-controls="layer-detail" aria-pressed="false"><span class="sd-layer-num">02</span><span class="sd-layer-title">İstemci adaptörü</span><span class="sd-layer-sub">Yerel hook'u eşler</span></button>
+        <span class="sd-flow-link" aria-hidden="true">↓</span>
+        <button class="sd-layer" type="button" data-layer="evidence" aria-controls="layer-detail" aria-pressed="false"><span class="sd-layer-num">03</span><span class="sd-layer-title">Kanıt + kimlik</span><span class="sd-layer-sub">Bağlam ve kapsamı bağlar</span></button>
+        <span class="sd-flow-link" aria-hidden="true">↓</span>
+        <button class="sd-layer" type="button" data-layer="policy" aria-controls="layer-detail" aria-pressed="true"><span class="sd-layer-num">04</span><span class="sd-layer-title">Politika + risk kapısı</span><span class="sd-layer-sub">Sınırlandırılmış sonuç üretir</span></button>
+        <span class="sd-flow-link" aria-hidden="true">↓</span>
+        <button class="sd-layer" type="button" data-layer="authority" aria-controls="layer-detail" aria-pressed="false"><span class="sd-layer-num">05</span><span class="sd-layer-title">Approval Authority</span><span class="sd-layer-sub">İnsan yetki verir</span></button>
+        <span class="sd-flow-link" aria-hidden="true">↓</span>
+        <button class="sd-layer" type="button" data-layer="execution" aria-controls="layer-detail" aria-pressed="false"><span class="sd-layer-num">06</span><span class="sd-layer-title">Yürütme sınırı</span><span class="sd-layer-sub">Eylem ilerler veya durur</span></button>
+        <span class="sd-flow-link" aria-hidden="true">↓</span>
+        <button class="sd-layer" type="button" data-layer="receipt" aria-controls="layer-detail" aria-pressed="false"><span class="sd-layer-num">07</span><span class="sd-layer-title">Trust Receipt</span><span class="sd-layer-sub">Karar incelenebilir kalır</span></button>
+      </div>
+      <aside class="sd-inspector" id="layer-detail" aria-live="polite">
+        <div class="sd-inspector-top"><span>SEÇİLİ BİLEŞEN</span><span class="sd-inspector-index" id="layerIndex">04 / 07</span></div>
+        <div class="sd-inspector-mark" id="layerMark">04</div>
+        <h3 id="layerTitle">Politika + risk kapısı</h3>
+        <p id="layerDescription">Yerel politika yolu, eylem isteğini yapılandırılmış kurallar ve risk sinyallerine göre değerlendirir. Bilinmeyen araçlar veya komutlar sessizce güvenilir kabul edilmez.</p>
+        <div class="sd-inspector-rule"><span>SORUMLULUK</span><b id="layerResponsibility">Etki oluşmadan önce karar vermek.</b></div>
+        <div class="sd-inspector-rule"><span>SINIR</span><b id="layerBoundary">Kapı yalnızca yürütme öncesinde kendisine ulaşan çağrıları yönetir.</b></div>
+        <a id="layerSource" class="sd-inspector-source" href="https://github.com/ali-ulu/huqan/blob/main/docs/external-action-guard.md" target="_blank" rel="noreferrer">Kaynak belgeyi aç ↗</a>
+        <noscript><p class="sd-noscript">Etkileşimli seçici JavaScript gerektirir. Sınırlar ve kısıtlar aşağıdaki bölümlerde ayrıca açıklanmıştır.</p></noscript>
+      </aside>
+    </div>
+    <div class="sd-note"><span class="sd-note-symbol">i</span><p><b>Önemli:</b> HUQAN model, ajan planlayıcı veya evrensel API gateway değildir. İstemciye özel adaptör, eylem gerçekleştirilmeden önce çalıştırma-öncesi kapıyı çağırmalıdır. Bağlanmamış bir ajan bu kapının kapsamı dışındadır.</p></div>
+  </section>
+
+  <section class="sd-section sd-lab-section">
+    <div class="sd-section-head">
+      <div><div class="sd-kicker">02 / Karar yolu</div><h2>Aynı ajan. Farklı etki alanı.</h2></div>
+      <p>Bu örnekler depoda belgelenen varsayılan <code>claude-code</code> gate profilinden alınmıştır. Karar sınırını anlatırlar; yerel kurulumunuza canlı istek göndermezler.</p>
+    </div>
+    <div class="sd-lab">
+      <div class="sd-lab-controls">
+        <div class="sd-lab-label">BİR EYLEM SEÇİN</div>
+        <button type="button" class="sd-scenario" data-scenario="read" aria-pressed="true"><span>01</span><b>Depo durumunu incele</b><code>git status</code></button>
+        <button type="button" class="sd-scenario" data-scenario="unknown" aria-pressed="false"><span>02</span><b>Sınıflandırılmamış komutu çalıştır</b><code>npm test</code></button>
+        <button type="button" class="sd-scenario" data-scenario="destructive" aria-pressed="false"><span>03</span><b>Branch'i force-push et</b><code>git push --force</code></button>
+      </div>
+      <div class="sd-lab-result" aria-live="polite">
+        <div class="sd-lab-result-top"><span>VARSAYILAN PROFİL ÖRNEĞİ</span><span class="sd-status allow" id="scenarioStatus">ALLOW</span></div>
+        <div class="sd-lab-action" id="scenarioCommand">git status</div>
+        <h3 id="scenarioTitle">Salt-okunur inceleme geçer.</h3>
+        <p id="scenarioDescription">Belgelenen varsayılan profil, bu salt-okunur komuta ek onay istemeden izin verir.</p>
+        <div class="sd-lab-foot"><span>NEDEN ÖNEMLİ?</span><b id="scenarioReason">Düşük etkili inceleme hızlı kalır; değerlendirme belirsizlik ve risk için ayrılır.</b></div>
+      </div>
+    </div>
+    <p class="sd-disclaimer">Yalnızca açıklayıcı örnektir. Politika yapılandırması sonucu değiştirebilir. Tarayıcı sayfası HUQAN'ı çağırmaz, komut çalıştırmaz, onay istemez veya üretim Trust Receipt oluşturmaz.</p>
+  </section>
+
+  <section class="sd-section shell">
+    <div class="sd-section-head">
+      <div><div class="sd-kicker">03 / Mühendislik tercihleri</div><h2>Entegrasyonu şekillendiren kalıplar.</h2></div>
+      <p>Bunlar bir ajan dağıtımını değerlendirirken kullanılabilecek sistem tasarımı mercekleridir. HUQAN'a gömülü özellikler değildir; hiçbiri gerçek yürütme yolunu doğrulama gereğini ortadan kaldırmaz.</p>
+    </div>
+    <div class="sd-pattern-grid">
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/how-api-gateway-works" target="_blank" rel="noreferrer"><span class="sd-pattern-type">ARAYA GİRME</span><h3>API Gateway</h3><p>Yönlendirmeyi yetkilendirmeden ayırın. Bir isteğin gateway'e ulaşması, politikadan geçtiği anlamına gelmez.</p><span class="sd-pattern-link">Kaynağı oku ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/sidecar-pattern" target="_blank" rel="noreferrer"><span class="sd-pattern-type">DAĞITIM</span><h3>Sidecar pattern</h3><p>Yerel enforcement bileşeninin ajan ve araçlara göre nerede konumlanacağını değerlendirin.</p><span class="sd-pattern-link">Kaynağı oku ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/idempotent-api" target="_blank" rel="noreferrer"><span class="sd-pattern-type">DOĞRULUK</span><h3>Idempotency</h3><p>Tekrar denemeler bir onayı iki dış etkiye dönüştürmemeli. Kimliği, eylemi ve replay kontrolünü birlikte ele alın.</p><span class="sd-pattern-link">Kaynağı oku ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/rate-limiting" target="_blank" rel="noreferrer"><span class="sd-pattern-type">DAYANIKLILIK</span><h3>Rate limiting</h3><p>Tekrarlanan istekleri ve kaynak baskısını sınırlayın. Rate limit yetkilendirmeyi tamamlar, onun yerini almaz.</p><span class="sd-pattern-link">Kaynağı oku ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/durable-ai-agents" target="_blank" rel="noreferrer"><span class="sd-pattern-type">KURTARMA</span><h3>Durable agents</h3><p>Bir iş akışı sürdürülürken bekleyen karar, tüketilmiş onay ve tamamlanmış etki birbirinden ayrılmalıdır.</p><span class="sd-pattern-link">Kaynağı oku ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/how-mcp-works" target="_blank" rel="noreferrer"><span class="sd-pattern-type">PROTOKOL</span><h3>MCP deep dive</h3><p>Araç keşfi ve taşıma protokolü yetkilendirme değildir. Hassas çağrılar çevresinde yürütme sınırını açık tutun.</p><span class="sd-pattern-link">Kaynağı oku ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/multi-agent-system" target="_blank" rel="noreferrer"><span class="sd-pattern-type">DELEGASYON</span><h3>Multi-agent architecture</h3><p>İş ajanlar arasında geçerken kimin başlattığını, kimin sahibi olduğunu ve hangi delegasyon zincirinin geçerli olduğunu koruyun.</p><span class="sd-pattern-link">Kaynağı oku ↗</span></a>
+      <a class="sd-pattern" href="https://newsletter.systemdesign.one/p/llm-evaluation-and-guardrails" target="_blank" rel="noreferrer"><span class="sd-pattern-type">DEĞERLENDİRME</span><h3>Evals, guardrails and security</h3><p>Değerlendirme puanları, içerik kontrolleri ve izin kararları farklı problemleri çözer. Her sınırı ayrı tasarlayın ve test edin.</p><span class="sd-pattern-link">Kaynağı oku ↗</span></a>
+    </div>
+    <div class="sd-catalog-note">
+      <div><span class="sd-kicker">REFERANS KATALOĞU</span><h3>System Design Academy</h3><p>Depo; şirket vaka incelemeleri, sistem tasarımı temelleri, mülakatlar, AI engineering ve white paper başlıklarında 214 harici okuma kaynağı listeliyor. Yukarıdaki kartlar HUQAN'la ilgili küçük bir seçkidir; makalelerin yeniden üretimi değildir.</p></div>
+      <a class="button" href="https://github.com/systemdesign42/system-design-academy" target="_blank" rel="noreferrer">214 kaynaklık kataloğu aç ↗</a>
+      <p class="sd-license-note">Katalog, içerikleri CC BY-NC-ND 4.0 lisansı altında tanımlar. Bu sayfa kaynak yayınlara bağlantı verir; makale metinlerini kopyalamaz veya uyarlamaz.</p>
+    </div>
+  </section>
+
+  <section class="sd-section shell">
+    <div class="sd-section-head">
+      <div><div class="sd-kicker">04 / Açık sınırlar</div><h2>Mimari ne vaat etmiyor?</h2></div>
+      <p>Güvenilir sistem tasarımı, arıza ve kapsam sınırlarını görünür kılar. Bunlar dipnot değil, ürün sözleşmesinin bir parçasıdır.</p>
+    </div>
+    <div class="sd-boundaries">
+      <div class="sd-boundary"><span>01</span><div><h3>Hook yoksa gate kapsamı da yok.</h3><p>Guard, yalnızca bağlı istemci eylemden önce onu çağırdığında eylemi yönetir. Adaptörü atlayan ajan veya araç yolu bu gate'in kapsamında değildir.</p></div></div>
+      <div class="sd-boundary"><span>02</span><div><h3>Dağıtım sınırı önemlidir.</h3><p>Approval Authority için Windows, Linux ve macOS kurulumları vardır; en çok saha deneyimi Windows tarafındadır. Container, sanal makine ve uzak host desteklenen dağıtım hedefleri değildir.</p></div></div>
+      <div class="sd-boundary"><span>03</span><div><h3>Receipt evrensel doğruluk değildir.</h3><p>Trust Receipt, belirli bir HUQAN sınırının belirli girdiler ve politika altında neyi değerlendirdiğini ve hangi kararı kaydettiğini gösterir. Bir AI iddiasının evrensel olarak doğru olduğunu veya operatörün dürüstlüğünü kanıtlamaz.</p></div></div>
+      <div class="sd-boundary"><span>04</span><div><h3>Diğer kontrolleri tamamlar.</h3><p>HUQAN; IAM, uygulama güvenliği, altyapı güvenliği, sandboxing veya kurumsal yönetişimin yerini almaz. İmzalı bir plugin otomatik olarak sandbox içinde çalışıyor değildir.</p></div></div>
+    </div>
+    <div class="sd-source-line"><b>Uygulama kaynakları</b><a href="https://github.com/ali-ulu/huqan/blob/main/docs/external-action-guard.md" target="_blank" rel="noreferrer">External Action Guard</a><a href="https://github.com/ali-ulu/huqan/blob/main/docs/adr/ADR-016-approval-authority-os-boundary.md" target="_blank" rel="noreferrer">Approval Authority ADR</a><a href="https://github.com/ali-ulu/huqan/blob/main/docs/wiki/Trust-Receipts.md" target="_blank" rel="noreferrer">Trust Receipts</a><a href="https://github.com/ali-ulu/huqan/blob/main/docs/wiki/MCP-and-External-Agent-Integration.md" target="_blank" rel="noreferrer">MCP ve ajan entegrasyonu</a></div>
+  </section>
+
+  <section class="sd-cta shell">
+    <div><span class="sd-kicker">GERÇEK SÖZLEŞMEDEN BAŞLAYIN</span><h2>Bir ajan. Korunan tek bir eylem.</h2><p>Anlamlı etki alanına sahip tek bir araç çağrısı seçin, çalıştırma-öncesi yolunu bağlayın ve kapsamı genişletmeden önce allow, review, block ve receipt davranışını doğrulayın.</p></div>
+    <div class="sd-cta-actions"><a class="button" href="https://github.com/ali-ulu/huqan#try-it-in-30-seconds" target="_blank" rel="noreferrer">Quickstart'ı çalıştır ↗</a><a class="sd-text-link" href="/tr/#demo">Tarayıcı anlatımını gör ↗</a></div>
+  </section>
+</main>
+<footer class="shell"><div>© 2026 Huqan / <a href="https://ai-ulu.com">AI-ULU</a></div><div><a href="/tr/">Ana sayfa</a> · <a href="/tr/blog/">Günlük</a> · <a href="https://github.com/ali-ulu/huqan">Kanonik depo</a></div></footer>
+<script src="/assets/system-design.js" defer></script>
+</body>
+</html>
