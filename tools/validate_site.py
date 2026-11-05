@@ -51,6 +51,37 @@ for path in html_files:
 for xml_name in ('sitemap.xml', 'feed.xml'):
     try: ET.parse(ROOT / xml_name)
     except Exception as exc: errors.append(f'{xml_name}: invalid XML: {exc}')
+
+# inline <script> bodies must parse as JS. A syntax error here (e.g. an
+# unescaped apostrophe in a translated string) silently kills the whole
+# script block, which can leave every .reveal at opacity:0 — a black page.
+import re as _re
+import shutil as _shutil
+import subprocess as _sp
+import tempfile as _tf
+_node = _shutil.which('node')
+for path in html_files:
+    soup2 = BeautifulSoup(path.read_text(errors='replace', encoding='utf-8'), 'html.parser')
+    rel2 = path.relative_to(ROOT).as_posix()
+    for i, script in enumerate(soup2.find_all('script')):
+        if script.get('src') or script.get('type'): continue
+        code = script.string or script.get_text()
+        if not _node:
+            break
+        with _tf.NamedTemporaryFile('w', suffix='.js', delete=False, encoding='utf-8') as fh:
+            fh.write(code)
+            tmp = fh.name
+        try:
+            r = _sp.run([_node, '--check', tmp], capture_output=True, encoding='utf-8', errors='replace')
+            if r.returncode != 0:
+                lines = (r.stderr or '').splitlines()
+                loc = next((l for l in lines if '.js:' in l), '')
+                why = next((l for l in lines if 'syntax' in l.lower() or 'Error' in l), 'syntax error')
+                safe = f'{loc} {why}'.encode('ascii', 'replace').decode('ascii').strip()[:200]
+                errors.append(f'{rel2}: inline script #{i} has a JS syntax error: {safe}')
+        finally:
+            Path(tmp).unlink(missing_ok=True)
+
 robots = (ROOT / 'robots.txt').read_text(encoding='utf-8')
 if 'Sitemap: https://huqan.com/sitemap.xml' not in robots: errors.append('robots.txt: missing sitemap directive')
 sitemap_text = (ROOT / 'sitemap.xml').read_text(encoding='utf-8')
