@@ -84,3 +84,17 @@ The main remaining visibility constraint is upstream Cloudflare Managed Content 
 10. [LangChain — Guardrails](https://docs.langchain.com/oss/python/langchain/guardrails)
 11. [Docker — MCP Gateway](https://docs.docker.com/ai/mcp-catalog-and-toolkit/mcp-gateway/)
 12. [DeepEval — Introduction to LLM Evals](https://deepeval.com/docs/evaluation-introduction)
+
+## 2026-11-06
+
+**Görünürlük güncellemeleri:**
+
+- **Yeni Live Diagrams bölümü** (`#diagrams`): üç böyle işareti (flow, hub, chart) içeren yan yapılandırılmış bir bento düzeni. Bu bölüm, Huqan sınırının istemci tarafında gerçek zamanlı olarak çizilmesini sağlar.
+- **Yeni FAQ bölümü** (`#faq`): AI ajans yönetişimiyle ilgili beş soru-cevap, JSON-LD `FAQPage` olarak yapılandırılmış veri içerir.
+- **softwareVersion 1.2.1**: JSON-LD `SoftwareApplication` şemasına eklendi.
+- **WebPage JSON-LD**: `Speakable` özelliği eklenerek sesli arama ve AI anketlerine optimize edildi.
+- **Sitemap lastmod**: tüm URL'ler 2026-11-06 olarak güncellendi.
+- **RSS feed**: dördüncü makale `NeMo Guardrails Alternatives` eklendi; `lastBuildDate` güncellendi.
+- **Yazı tipleri**: `Space Grotesk`, `Bodoni Moda`, `IBM Plex Mono` self-host edilmiştir; `<head>` link etiketleri agent tarafından eklenir.
+- **Blog görselleri**: WebP formatında, lazy loading ile yüklenir.
+- **Cloudflare önerileri**: varsayılan asset cache kuralları, AI crawler politikası gözden geçirilmeli, Search Console'a sitemap gönderilmelidir.

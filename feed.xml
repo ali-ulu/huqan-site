@@ -5,7 +5,14 @@
     <link>https://huqan.com/blog/</link>
     <description>Source-backed notes on AI agent governance, verification, provenance, memory safety, action approval, and Trust Receipts.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 28 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 06 Nov 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>NeMo Guardrails Alternatives</title>
+      <link>https://huqan.com/blog/nemo-guardrails-alternatives/</link>
+      <guid isPermaLink="true">https://huqan.com/blog/nemo-guardrails-alternatives/</guid>
+      <pubDate>Sun, 06 Nov 2026 00:00:00 GMT</pubDate>
+      <description>Four short alternatives compared by the boundary each one defends: Huqan, LangChain Guardrails, Docker MCP Gateway, and DeepEval.</description>
+    </item>
     <item>
       <title>5 Best AI Governance Tools in 2026, Compared by Use Case</title>
       <link>https://huqan.com/blog/best-ai-governance-tools/</link>

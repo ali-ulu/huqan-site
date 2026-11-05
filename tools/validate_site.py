@@ -8,7 +8,7 @@ errors = []
 notes = []
 html_files = sorted(p for p in ROOT.rglob('*.html') if '.git' not in p.parts)
 for path in html_files:
-    soup = BeautifulSoup(path.read_text(errors='replace'), 'html.parser')
+    soup = BeautifulSoup(path.read_text(errors='replace', encoding='utf-8'), 'html.parser')
     rel = path.relative_to(ROOT).as_posix()
     title = soup.find('title')
     desc = soup.find('meta', attrs={'name':'description'})
@@ -51,9 +51,9 @@ for path in html_files:
 for xml_name in ('sitemap.xml', 'feed.xml'):
     try: ET.parse(ROOT / xml_name)
     except Exception as exc: errors.append(f'{xml_name}: invalid XML: {exc}')
-robots = (ROOT / 'robots.txt').read_text()
+robots = (ROOT / 'robots.txt').read_text(encoding='utf-8')
 if 'Sitemap: https://huqan.com/sitemap.xml' not in robots: errors.append('robots.txt: missing sitemap directive')
-sitemap_text = (ROOT / 'sitemap.xml').read_text()
+sitemap_text = (ROOT / 'sitemap.xml').read_text(encoding='utf-8')
 for url in ('https://huqan.com/blog/', 'https://huqan.com/tr/blog/', 'https://huqan.com/blog/nemo-guardrails-alternatives/', 'https://huqan.com/tr/blog/nemo-guardrails-alternatives/'):
     if url not in sitemap_text: errors.append(f'sitemap.xml: missing {url}')
 print(f'HTML files checked: {len(html_files)}')
