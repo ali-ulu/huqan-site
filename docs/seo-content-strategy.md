@@ -67,3 +67,17 @@ Yayından sonra Google Search Console'a domain property eklenerek sitemap gönde
 5. [Bing Webmaster Blog — Introducing AI Performance in Bing Webmaster Tools Public Preview](https://blogs.bing.com/webmaster/February-2026/Introducing-AI-Performance-in-Bing-Webmaster-Tools-Public-Preview)
 6. [Perplexity — Perplexity Crawlers](https://docs.perplexity.ai/docs/resources/perplexity-crawlers)
 7. [Huqan — canonical repository README](https://github.com/ali-ulu/huqan)
+
+## 2026-11-06
+
+**Görünürlük güncellemeleri:**
+
+- **Yeni Live Diagrams bölümü** (`#diagrams`): üç dinamik SVG şablonu (flow, hub, chart) içeren yan yapılandırılmış bir bento düzeni. Bölüm, Huqan sınırının istemci tarafında gerçek zamanlı olarak çizilmesini sağlar.
+- **Yeni FAQ bölümü** (`#faq`): AI ajans yönetişimi için beş soru-cevap; JSON-LD `FAQPage` olarak yapılandırılmış veri içerir.
+- **softwareVersion 1.2.1**: JSON-LD `SoftwareApplication` şemasına eklendi.
+- **WebPage JSON-LD**: `Speakable` özelliği eklenerek sesli arama ve AI anketlerine optimize edildi.
+- **Sitemap lastmod**: tüm URL'ler 2026-11-06 olarak güncellendi.
+- **RSS feed**: dördüncü makale `NeMo Guardrails Alternatives` eklendi; `lastBuildDate` güncellendi.
+- **Yazı tipleri**: `Space Grotesk`, `Bodoni Moda`, `IBM Plex Mono` self-host edilmiştir; `<head>` link etiketleri agent tarafından eklenir.
+- **Blog görselleri**: WebP formatında, lazy loading ile yüklenir.
+- **Cloudflare önerileri**: varsayılan asset cache kuralları, AI crawler politikası gözden geçirilmeli, Search Console'a sitemap gönderilmelidir.

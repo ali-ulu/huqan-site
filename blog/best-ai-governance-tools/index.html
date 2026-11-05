@@ -79,7 +79,10 @@
     <table><thead><tr><th>Tool</th><th>Best for</th><th>Starting price</th></tr></thead><tbody><tr><td>Huqan</td><td>Evidence-bound governance and Trust Receipts</td><td>Free/open-source package</td></tr><tr><td>NeMo Guardrails</td><td>Programmable LLM input, retrieval, dialog, execution, and output rails</td><td>Free/open-source library</td></tr><tr><td>LangChain Guardrails</td><td>Agent middleware, PII handling, and human approval hooks</td><td>Free/open-source framework layer</td></tr><tr><td>Docker MCP Gateway</td><td>MCP server proxy, lifecycle, credentials, routing, isolation, and tracing</td><td>Open-source Gateway; Docker plan/ops vary</td></tr><tr><td>DeepEval</td><td>LLM test cases, metrics, datasets, and CI evaluation</td><td>Free/open-source core; cloud varies</td></tr></tbody></table>
 
     <h2>1. <a href="https://github.com/ali-ulu/huqan">Huqan</a></h2>
-    <img src="images/huqan-homepage.png" alt="Huqan local-first AI governance homepage showing the deterministic trust boundary and evidence flow" width="1440" height="900" loading="lazy">
+    <picture>
+      <source srcset="/blog/best-ai-governance-tools/images/huqan-homepage.webp" type="image/webp">
+      <img src="images/huqan-homepage.png" alt="Huqan local-first AI governance homepage showing the deterministic trust boundary and evidence flow" width="1440" height="900" loading="lazy">
+    </picture>
     <p><i>Huqan's live homepage shows its local-first, deterministic, auditable trust boundary for AI claims, memory, and selected actions.</i></p>
     <p>Huqan is a local-first, partial-trust AI governance and verification layer. It connects claims, memory writes, and selected agent actions to evidence, provenance, workspace scope, policy, approval, verification, risk gates, audit context, and Trust Receipts on supported paths.<sup><a href="#ref-1">[1]</a></sup></p>
     <p>Read the <a href="/blog/what-is-ai-agent-governance/">AI agent governance guide</a> for the control flow, inspect the <a href="/blog/what-is-ai-agent-governance/#trust-receipt">Trust Receipt explanation</a>, or compare Huqan's <a href="/blog/huqan-vs-nemo-guardrails/#action-governance">action-governance boundary</a> with runtime guardrails.</p>
@@ -89,7 +92,10 @@
     <p><b>Pricing:</b> Free/open-source package under AGPL-3.0-only in the current repository; no hosted subscription price is defined there. Infrastructure and optional integration costs vary.</p>
 
     <h2>2. <a href="https://docs.nvidia.com/nemo/guardrails/about-nemo-guardrails-library/overview">NeMo Guardrails</a></h2>
-    <img src="images/nemo-guardrails-homepage.png" alt="NVIDIA NeMo Guardrails official documentation overview showing programmable LLM rails" width="1440" height="900" loading="lazy">
+    <picture>
+      <source srcset="/blog/best-ai-governance-tools/images/nemo-guardrails-homepage.webp" type="image/webp">
+      <img src="images/nemo-guardrails-homepage.png" alt="NVIDIA NeMo Guardrails official documentation overview showing programmable LLM rails" width="1440" height="900" loading="lazy">
+    </picture>
     <p><i>Official NeMo Guardrails documentation overview, captured from the public developer guide.</i></p>
     <p>NeMo Guardrails is an open-source Python package for adding programmable guardrails to LLM-based applications. The official overview describes input, retrieval, dialog, execution, and output rails, alongside YAML configuration, Colang flows, custom actions, a Python SDK, and a guardrails server.<sup><a href="#ref-2">[2]</a></sup></p>
     <p><b>Key features:</b></p><ul><li><b>Multiple rail stages:</b> Input, retrieval, dialog, execution, and output controls can be applied at different parts of an LLM interaction.</li><li><b>Programmable configuration:</b> YAML, Colang, custom Python actions, and integration APIs let teams express application-specific logic.</li><li><b>Library and service paths:</b> Teams can use a self-managed Python environment or a NeMo Guardrails microservice pattern.</li></ul>
@@ -98,7 +104,10 @@
     <p><b>Pricing:</b> Free/open-source library; the public overview does not define a monthly software subscription for the package. Compute, models, APIs, and service operations vary.</p>
 
     <h2>3. <a href="https://docs.langchain.com/oss/python/langchain/guardrails">LangChain Guardrails</a></h2>
-    <img src="images/langchain-guardrails-homepage.png" alt="LangChain Guardrails official documentation showing middleware and agent execution controls" width="1440" height="900" loading="lazy">
+    <picture>
+      <source srcset="/blog/best-ai-governance-tools/images/langchain-guardrails-homepage.webp" type="image/webp">
+      <img src="images/langchain-guardrails-homepage.png" alt="LangChain Guardrails official documentation showing middleware and agent execution controls" width="1440" height="900" loading="lazy">
+    </picture>
     <p><i>Official LangChain Guardrails documentation showing middleware, validation, and human-in-the-loop controls.</i></p>
     <p>LangChain Guardrails uses middleware to validate and filter content at key points in an agent's execution. The official documentation covers deterministic and model-based guardrails, PII handling, before/after agent hooks, custom middleware, and human approval for sensitive tools.<sup><a href="#ref-3">[3]</a></sup></p>
     <p><b>Key features:</b></p><ul><li><b>Before and after hooks:</b> Middleware can inspect a request before an agent starts or validate a final output after the agent completes.</li><li><b>PII handling:</b> Built-in middleware can redact, mask, hash, or block selected sensitive data types.</li><li><b>Human-in-the-loop:</b> Sensitive tools can pause for approval while safe operations are auto-approved through configured middleware.</li></ul>
@@ -107,7 +116,10 @@
     <p><b>Pricing:</b> Free/open-source framework layer for the documented guardrails code; model use, LangSmith or hosted services, compute, and operations can add costs.</p>
 
     <h2>4. <a href="https://docs.docker.com/ai/mcp-catalog-and-toolkit/mcp-gateway/">Docker MCP Gateway</a></h2>
-    <img src="images/docker-mcp-gateway-homepage.png" alt="Docker MCP Gateway official documentation showing centralized proxy and MCP server operations" width="1440" height="900" loading="lazy">
+    <picture>
+      <source srcset="/blog/best-ai-governance-tools/images/docker-mcp-gateway-homepage.webp" type="image/webp">
+      <img src="images/docker-mcp-gateway-homepage.png" alt="Docker MCP Gateway official documentation showing centralized proxy and MCP server operations" width="1440" height="900" loading="lazy">
+    </picture>
     <p><i>Official Docker MCP Gateway documentation showing its centralized proxy and server lifecycle focus.</i></p>
     <p>Docker MCP Gateway is an open-source solution for orchestrating Model Context Protocol servers. It acts as a centralized proxy that manages configuration, credentials, access control, server lifecycle, routing, authentication, isolated containers, logging, and call tracing.<sup><a href="#ref-4">[4]</a></sup></p>
     <p><b>Key features:</b></p><ul><li><b>Centralized proxy:</b> Clients connect to the Gateway while it routes requests to the configured MCP server.</li><li><b>Container isolation:</b> MCP servers can run in Docker containers with restricted privileges, network access, and resource usage.</li><li><b>Lifecycle and tracing:</b> The Gateway can start servers on demand and provide logging and call-tracing visibility.</li></ul>
@@ -116,7 +128,10 @@
     <p><b>Pricing:</b> The Gateway is documented as open source, while Docker Desktop, AI Governance access, infrastructure, and operations may follow separate plans or costs. The public docs do not provide one universal monthly starting price for the complete deployment.</p>
 
     <h2>5. <a href="https://deepeval.com/docs/evaluation-introduction">DeepEval</a></h2>
-    <img src="images/deepeval-homepage.png" alt="DeepEval official documentation showing LLM evaluation test cases, metrics, and datasets" width="1440" height="900" loading="lazy">
+    <picture>
+      <source srcset="/blog/best-ai-governance-tools/images/deepeval-homepage.webp" type="image/webp">
+      <img src="images/deepeval-homepage.png" alt="DeepEval official documentation showing LLM evaluation test cases, metrics, and datasets" width="1440" height="900" loading="lazy">
+    </picture>
     <p><i>Official DeepEval documentation showing the LLM evaluation workflow and metric surface.</i></p>
     <p>DeepEval is an LLM evaluation framework organized around test cases, metrics, and evaluation datasets. The official introduction documents both local script evaluation with <code>evaluate()</code> and CI/CD execution with <code>deepeval test run</code>; a cloud testing report is available when logged into Confident AI.<sup><a href="#ref-5">[5]</a></sup></p>
     <p><b>Key features:</b></p><ul><li><b>Test cases and metrics:</b> Teams can evaluate individual LLM test cases against one or more metrics.</li><li><b>Evaluation datasets:</b> Datasets group goldens and test cases for repeatable evaluation.</li><li><b>CI/CD support:</b> Evaluation commands can run as pre-deployment checks in a pipeline.</li></ul>
