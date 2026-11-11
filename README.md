@@ -1,5 +1,5 @@
 # huqan-site
-Official Huqan landing page — deterministic trust infrastructure for AI systems.
+Official Huqan landing page — deterministic trust infrastructure for AI agents.
 
 ## Local demo preview
 
